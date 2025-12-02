@@ -494,7 +494,7 @@
     <div class="container">
         <header>
             <h1>🏥 Stroke FAST TRACK - Mechanical Thrombectomy Referral</h1>
-            <p>ใบส่งตัวคนไข้ Stroke FAST TRACK เพื่อการรักษาแบบ Mechanical Thrombectomy</p>
+            <p>Maharat nakhonratchasima Hospital</p>
         </header>
 
         <div class="content">
@@ -508,7 +508,7 @@
                     <div class="section-body active">
                         <div class="form-group">
                             <label>โรงพยาบาล</label>
-                            <input type="text" value="โรงพยาบาล มหาราช นครราชสีมา" readonly style="background: #f9f9f9;">
+                            <input type="text" value="โรงพยาบาลมหาราชนครราชสีมา" readonly style="background: #f9f9f9;">
                         </div>
 
                         <div class="row">
@@ -575,7 +575,7 @@
                                 </div>
                                 <div class="checkbox-item">
                                     <input type="checkbox" id="thromboembol" value="ประวัติลิ่มเลือด">
-                                    <label for="thromboembol">ประวัติลิ่มเลือด</label>
+                                    <label for="thromboembol">หลิดเลือดสมอง</label>
                                 </div>
                                 <div class="checkbox-item">
                                     <input type="checkbox" id="smoking" value="สูบบุหรี่">
@@ -586,7 +586,7 @@
 
                         <div class="form-group">
                             <label>ยาที่ใช้อยู่</label>
-                            <textarea id="medications" placeholder="บันทึกยาที่เกี่ยวข้องกับการเลือดและหัวใจ"></textarea>
+                            <textarea id="medications" placeholder="บันทึกยาที่เกี่ยวข้องกับการแข็งตัวของเลือดและหัวใจ"></textarea>
                         </div>
                     </div>
                 </div>
@@ -680,7 +680,7 @@
                                 <div class="sensory-item">
                                     <label style="margin-bottom: 0;">RT</label>
                                     <select id="sensoryRT" onchange="updateSensoryDisplay()">
-                                        <option value="">-- ไม่มี --</option>
+                                        <option value="ืNormal">Normal</option>
                                         <option value="RT Sensory Decrease">Decrease</option>
                                         <option value="RT Sensory Absent">Absent</option>
                                     </select>
@@ -688,7 +688,7 @@
                                 <div class="sensory-item">
                                     <label style="margin-bottom: 0;">LT</label>
                                     <select id="sensoryLT" onchange="updateSensoryDisplay()">
-                                        <option value="">-- ไม่มี --</option>
+                                        <option value="Normal">Normal</option>
                                         <option value="LT Sensory Decrease">Decrease</option>
                                         <option value="LT Sensory Absent">Absent</option>
                                     </select>
@@ -915,14 +915,6 @@
                                 <div class="radio-item">
                                     <input type="radio" name="territory" value="LT MCA" id="terLT_MCA">
                                     <label for="terLT_MCA">LT MCA</label>
-                                </div>
-                                <div class="radio-item">
-                                    <input type="radio" name="territory" value="M1" id="terM1">
-                                    <label for="terM1">M1</label>
-                                </div>
-                                <div class="radio-item">
-                                    <input type="radio" name="territory" value="M2" id="terM2">
-                                    <label for="terM2">M2</label>
                                 </div>
                                 <div class="radio-item">
                                     <input type="radio" name="territory" value="ACA" id="terACA">
@@ -1300,7 +1292,7 @@
             <div style="margin-top: 25px; text-align: center; font-size: 11px; color: var(--dark); border-top: 2px solid var(--dark); padding-top: 15px;">
                 <div style="margin-bottom: 5px;">ให้ติดสติกเกอร์ผู้ป่วย (Patient Sticker)</div>
                 <div style="font-size: 10px; color: #666;">เอกสารส่งตัว Stroke FAST TRACK - Mechanical Thrombectomy Referral</div>
-                <div style="font-size: 10px; color: #666;">โรงพยาบาล มหาราช นครราชสีมา</div>
+                <div style="font-size: 10px; color: #666;">โรงพยาบาลมหาราชนครราชสีมา</div>
             </div>
         </div>
 
@@ -1489,12 +1481,11 @@
                 const pushPercentage = isStandard ? '10%' : '15%';
 
                 document.getElementById('rtpaDosesBox').innerHTML = `
-                    <div style="font-weight: bold; margin-bottom: 8px; color: var(--primary);">rtPA Dosing Calculation:</div>
                     <div style="margin: 5px 0;"><strong>Weight:</strong> ${weight} kg</div>
                     <div style="margin: 5px 0;"><strong>Dosage:</strong> ${dosage} mg/kg ${isStandard ? '(Standard)' : '(Alternative)'}</div>
-                    <div style="margin: 5px 0; border-bottom: 2px solid var(--secondary); padding-bottom: 8px;"><strong>Total Dose:</strong> ${totalDose.toFixed(1)} mg (max 90 mg)</div>
-                    <div style="margin: 5px 0; color: var(--danger); font-weight: bold;"><strong>${pushPercentage} IV Push:</strong> ${bolus.toFixed(1)} mg in 1 minute</div>
-                    <div style="margin: 5px 0; color: var(--danger); font-weight: bold;"><strong>90% IV Drip:</strong> ${infusion.toFixed(1)} mg in 60 minutes</div>
+                    <div style="margin: 5px 0; border-bottom: 2px solid var(--secondary); padding-bottom: 8px;">
+                    <strong>Total Dose:</strong> ${totalDose.toFixed(1)} mg (max 90 mg),<strong>${pushPercentage} IV Push:</strong> ${bolus.toFixed(1)} mg in 1 minute,<strong>90% IV Drip:</strong> ${infusion.toFixed(1)} mg in 60 minutes
+                    </div>
                 `;
             } else {
                 document.getElementById('rtpaSection').style.display = 'none';
