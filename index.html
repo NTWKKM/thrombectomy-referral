@@ -301,32 +301,36 @@
 
         .print-document {
             background: var(--white);
-            padding: 40px;
-            margin: 20px auto;
+            padding: 50px 40px;
+            margin: 0 auto;
             max-width: 210mm;
             min-height: 297mm;
-            box-shadow: 0 0 10px rgba(0,0,0,0.2);
-            font-family: Arial, sans-serif;
-            font-size: 13px;
-            line-height: 1.4;
+            box-shadow: none;
+            font-family: 'Cordia New', Calibri, sans-serif;
+            font-size: 14px;
+            line-height: 1.6;
         }
 
         .print-header {
             text-align: center;
-            margin-bottom: 20px;
-            border-bottom: 3px solid var(--primary);
-            padding-bottom: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--dark);
+            border-top: 2px solid var(--dark);
+            padding: 15px 0;
         }
 
         .print-header h1 {
-            font-size: 18px;
-            color: var(--primary);
-            margin-bottom: 5px;
+            font-size: 16px;
+            color: var(--dark);
+            margin-bottom: 3px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
         }
 
         .print-header p {
-            font-size: 12px;
-            color: #666;
+            font-size: 13px;
+            color: var(--dark);
+            margin: 2px 0;
         }
 
         .print-section {
@@ -335,12 +339,17 @@
         }
 
         .print-section-title {
-            background: #e8f4f8;
-            padding: 8px 12px;
+            background: transparent;
+            padding: 8px 0;
             font-weight: bold;
-            color: var(--primary);
-            margin-bottom: 10px;
-            border-left: 4px solid var(--primary);
+            color: var(--dark);
+            margin-bottom: 8px;
+            margin-top: 12px;
+            border-left: none;
+            border-bottom: 1px solid var(--dark);
+            text-transform: uppercase;
+            font-size: 13px;
+            letter-spacing: 0.5px;
         }
 
         .print-row {
@@ -359,22 +368,27 @@
         }
 
         .print-field {
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 3px;
-            min-height: 20px;
+            border-bottom: 1px dotted #999;
+            padding-bottom: 4px;
+            min-height: 22px;
+            padding-left: 5px;
         }
 
         .print-field-label {
-            font-size: 11px;
-            color: #666;
-            font-weight: bold;
-            text-transform: uppercase;
+            font-size: 12px;
+            color: var(--dark);
+            font-weight: normal;
+            text-transform: none;
+            display: inline-block;
+            min-width: 120px;
         }
 
         .print-field-value {
-            font-size: 13px;
+            font-size: 14px;
             color: var(--dark);
-            margin-top: 2px;
+            margin-top: 0;
+            display: inline;
+            font-weight: normal;
         }
 
         .print-box {
@@ -386,27 +400,31 @@
         }
 
         .print-signature {
-            margin-top: 30px;
+            margin-top: 50px;
             text-align: right;
+            padding-right: 20px;
         }
 
         .signature-line {
             border-top: 1px solid var(--dark);
             width: 200px;
             margin-left: auto;
-            padding-top: 5px;
-            font-size: 11px;
+            padding-top: 15px;
+            font-size: 12px;
+            text-align: center;
         }
 
         @media print {
             body {
                 background: var(--white);
                 padding: 0;
+                margin: 0;
             }
 
             .container {
                 box-shadow: none;
                 max-width: 100%;
+                border-radius: 0;
             }
 
             header {
@@ -421,6 +439,7 @@
                 display: block;
                 background: var(--white);
                 padding: 0;
+                margin: 0;
             }
 
             .button-group {
@@ -428,9 +447,11 @@
             }
 
             .print-document {
-                padding: 0;
+                padding: 50px 40px;
                 margin: 0;
                 box-shadow: none;
+                max-width: 100%;
+                min-height: auto;
             }
         }
 
@@ -1264,9 +1285,10 @@
                 </div>
             </div>
 
-            <div style="margin-top: 30px; text-align: center; font-size: 11px; color: #999;">
-                ============ ใบส่งตัว (Referral Form) ============<br>
-                ติดสติกเกอร์ผู้ป่วย (Patient Sticker) | Stroke Center Referral Network
+            <div style="margin-top: 40px; text-align: center; font-size: 12px; color: var(--dark); border-top: 2px solid var(--dark); padding-top: 20px;">
+                <div style="margin-bottom: 10px;">ให้ติดสติกเกอร์ผู้ป่วย (Patient Sticker)</div>
+                <div style="font-size: 11px; color: #666;">เอกสารส่งตัว Stroke FAST TRACK - Mechanical Thrombectomy Referral</div>
+                <div style="font-size: 11px; color: #666;">โรงพยาบาล มหาราช นครราชสีมา</div>
             </div>
         </div>
     </div>
