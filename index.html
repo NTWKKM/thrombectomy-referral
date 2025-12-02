@@ -412,7 +412,11 @@
             padding-top: 10px;
             font-size: 11px;
             text-align: center;
-        }            @media print {
+        }            .print-criteria-section {
+            page-break-before: always;
+        }
+
+        @media print {
             body {
                 background: var(--white);
                 padding: 0;
@@ -461,7 +465,16 @@
                 min-height: auto;
                 page-break-after: always;
             }
+
+            .print-section {
+                page-break-inside: avoid;
+            }
+
+            .print-criteria-section {
+                page-break-before: always;
+            }
         }
+</div>
 
         @media (max-width: 768px) {
             .row,
@@ -1057,7 +1070,6 @@
                 <!-- Button Group -->
                 <div class="button-group">
                     <button type="button" class="btn-primary" onclick="generatePreview()">📄 Generate & Print Preview</button>
-                    <button type="button" class="btn-secondary" onclick="printDocument()">🖨️ Print</button>
                     <button type="button" class="btn-danger" onclick="clearForm()">🗑️ Clear All</button>
                 </div>
             </form>
@@ -1245,23 +1257,6 @@
                     <div class="print-field">
                         <div class="print-field-label">Additional Imaging</div>
                         <div class="print-field-value" id="p_additionalImaging"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="print-section">
-                <div class="print-section-title">เหตุผลการส่ง (Thrombectomy Indications)</div>
-                <div class="print-row full">
-                    <div class="print-field">
-                        <div class="print-field-label">เกณฑ์</div>
-                        <div class="print-field-value" id="p_criteria"></div>
-                    </div>
-                </div>
-
-                <div class="print-row full">
-                    <div class="print-field">
-                        <div class="print-field-label">Contraindications</div>
-                        <div class="print-field-value" id="p_contraindications"></div>
                     </div>
                 </div>
             </div>
