@@ -97,7 +97,7 @@
         }
 
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 10px; /* ปรับจาก 15px เป็น 10px */
         }
 
         label {
@@ -506,11 +506,6 @@
                         <span class="toggle">▼</span>
                     </div>
                     <div class="section-body active">
-                        <div class="form-group">
-                            <label>โรงพยาบาล</label>
-                            <input type="text" value="โรงพยาบาลมหาราชนครราชสีมา" readonly style="background: #f9f9f9;">
-                        </div>
-
                         <div class="row">
                             <div class="form-group">
                                 <label>HN / Patient ID</label>
@@ -575,7 +570,7 @@
                                 </div>
                                 <div class="checkbox-item">
                                     <input type="checkbox" id="thromboembol" value="ประวัติลิ่มเลือด">
-                                    <label for="thromboembol">หลิดเลือดสมอง</label>
+                                    <label for="thromboembol">หลอดเลือดสมอง</label>
                                 </div>
                                 <div class="checkbox-item">
                                     <input type="checkbox" id="smoking" value="สูบบุหรี่">
@@ -680,8 +675,7 @@
                                 <div class="sensory-item">
                                     <label style="margin-bottom: 0;">RT</label>
                                     <select id="sensoryRT" onchange="updateSensoryDisplay()">
-                                        <option value="ืNormal">Normal</option>
-                                        <option value="RT Sensory Decrease">Decrease</option>
+                                        <option value="Normal">Normal</option> <option value="RT Sensory Decrease">Decrease</option>
                                         <option value="RT Sensory Absent">Absent</option>
                                     </select>
                                 </div>
@@ -1022,8 +1016,7 @@
 
                         <div class="form-group" style="margin-top: 15px;">
                             <label>บันทึกเพิ่มเติม / Contraindications</label>
-                            <textarea id="contraindications" placeholder="เช่น - ประวัติการแพ้สาร Contrast - ท่าแต่ว่า Hb ต่ำ ฯลฯ"></textarea>
-                        </div>
+                            <textarea id="contraindications" placeholder="เช่น - ประวัติการแพ้สาร Contrast - ภาวะ Hb ต่ำ ฯลฯ"></textarea> </div>
                     </div>
                 </div>
             
@@ -1043,7 +1036,7 @@
                                     <option>ลูกสะใภ้</option>
                                     <option>หลาน</option>
                                     <option>พี่</option>
-                                    <option>น้อย</option>
+                                    <option>น้อง</option>
                                     <option>แม่</option>
                                     <option>พ่อ</option>
                                     <option>สามี</option>
