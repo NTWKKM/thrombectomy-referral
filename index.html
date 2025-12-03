@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ใบส่งตัว Stroke FAST TRACK - Mechanical Thrombectomy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #1a5f7a;
@@ -108,7 +109,6 @@
             font-size: 14px;
         }
 
-        /* เพิ่ม input[type="tel"] ให้ขนาดเท่ากัน */
         input[type="text"],
         input[type="number"],
         input[type="time"],
@@ -120,7 +120,7 @@
             border: 1px solid var(--border);
             border-radius: 4px;
             font-size: 14px;
-            font-family: Arial, sans-serif;
+            font-family: 'Sarabun', Arial, sans-serif;
         }
 
         textarea {
@@ -212,7 +212,6 @@
             gap: 15px;
         }
 
-        /* ปรับ Sensory item เป็น Flexbox แก้ปัญหาตัวหนังสือทับ */
         .sensory-item {
             display: flex;
             align-items: center;
@@ -264,7 +263,6 @@
         .btn-secondary:hover { background: #ec971f; }
         .btn-danger { background: var(--danger); color: var(--white); }
         .btn-danger:hover { background: #c9302c; }
-        /* ปุ่มสีเทาสำหรับ Print Blank */
         .btn-info { background: #17a2b8; color: var(--white); } 
         .btn-info:hover { background: #138496; }
 
@@ -280,22 +278,22 @@
 
         .print-document {
             background: var(--white);
-            padding: 35px 40px;
+            padding: 20px 30px;
             margin: 0 auto;
             max-width: 210mm;
             box-shadow: none;
-            font-family: 'Sarabun', 'Cordia New', sans-serif;
-            font-size: 13px;
-            line-height: 1.4;
+            font-family: 'Sarabun', sans-serif;
+            font-size: 12px;
+            line-height: 1.3;
             position: relative;
         }
 
         .print-header {
             text-align: center;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             border-bottom: 2px solid var(--dark);
             border-top: 2px solid var(--dark);
-            padding: 10px 0;
+            padding: 8px 0;
             position: relative;
         }
 
@@ -307,13 +305,13 @@
         }
 
         .print-section {
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             page-break-inside: avoid;
         }
 
         .print-section-title {
-            background: transparent;
-            padding: 4px 0;
+            background: #eee;
+            padding: 3px 5px;
             font-weight: bold;
             color: var(--dark);
             margin-bottom: 4px;
@@ -328,16 +326,14 @@
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
         }
 
-        /* Helper classes for print grid */
         .print-col-100 { width: 100%; }
         .print-col-50 { width: calc(50% - 5px); }
         .print-col-33 { width: calc(33.33% - 7px); }
         .print-col-25 { width: calc(25% - 8px); }
         
-        /* Custom layout for Location line */
         .print-layout-loc {
             display: grid;
             grid-template-columns: 1.5fr 1fr 1.2fr 1fr;
@@ -347,7 +343,7 @@
 
         .print-field {
             border-bottom: 1px dotted #999;
-            padding-bottom: 2px;
+            padding-bottom: 1px;
             display: flex;
             align-items: baseline;
         }
@@ -367,15 +363,29 @@
             flex-grow: 1;
         }
 
+        /* Checkbox style for print */
+        .checkbox-square {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border: 1px solid #000;
+            margin-right: 3px;
+            margin-left: 8px;
+            vertical-align: middle;
+            background: #fff;
+        }
+        .checkbox-square:first-child { margin-left: 0; }
+        .checkbox-label { margin-right: 8px; }
+
         .print-box {
             border: 1px solid #ccc;
-            padding: 8px;
-            margin: 5px 0;
+            padding: 5px;
+            margin: 3px 0;
             background: #fff;
         }
 
         .print-signature {
-            margin-top: 25px;
+            margin-top: 20px;
             text-align: right;
             padding-right: 20px;
         }
@@ -400,11 +410,15 @@
             }
             .print-document {
                 box-shadow: none;
-                padding: 20px 30px;
+                padding: 0;
                 max-width: 100%;
+                width: 100%;
             }
-            /* Hide print buttons */
             .print-preview button { display: none !important; }
+            @page {
+                size: A4;
+                margin: 1cm;
+            }
         }
         
         @media (max-width: 768px) {
@@ -800,19 +814,19 @@
                     <div class="print-field print-col-33" id="pf_hn"><span class="print-field-label">HN</span><span class="print-field-value" id="p_hn"></span></div>
                     <div class="print-field print-col-33" id="pf_name"><span class="print-field-label">ชื่อ-สกุล</span><span class="print-field-value" id="p_name"></span></div>
                     <div class="print-field print-col-33" id="pf_age"><span class="print-field-label">อายุ</span><span class="print-field-value" id="p_age"></span></div>
-                    
                     <div class="print-field print-col-33" id="pf_gender"><span class="print-field-label">เพศ</span><span class="print-field-value" id="p_gender"></span></div>
                     <div class="print-field print-col-33" id="pf_weight"><span class="print-field-label">น้ำหนัก</span><span class="print-field-value" id="p_weight"></span></div>
                 </div>
                 <div class="print-row">
                     <div class="print-field print-col-100" id="pf_comorbidities"><span class="print-field-label">โรคประจำตัว</span><span class="print-field-value" id="p_comorbidities"></span></div>
+                </div>
+                <div class="print-row">
                     <div class="print-field print-col-100" id="pf_medications"><span class="print-field-label">ยาที่ใช้</span><span class="print-field-value" id="p_medications"></span></div>
                 </div>
             </div>
 
             <div class="print-section">
                 <div class="print-section-title">ประวัติและอาการ (History & Symptoms)</div>
-                
                 <div class="print-row">
                     <div class="print-field" style="width: 25%;" id="pf_symptomTime">
                         <span class="print-field-label">LKW</span><span class="print-field-value" id="p_symptomTime"></span>
@@ -848,7 +862,7 @@
             </div>
 
             <div class="print-section">
-                <div style="margin-bottom: 5px; font-weight: bold; font-size: 11px;">Vital Signs:</div>
+                <div style="margin-bottom: 3px; font-weight: bold; font-size: 11px;">Vital Signs:</div>
                 <div class="print-row">
                     <div class="print-field print-col-25" id="pf_bp"><span class="print-field-label">BP</span><span class="print-field-value" id="p_bp"></span></div>
                     <div class="print-field print-col-25" id="pf_hr"><span class="print-field-label">HR</span><span class="print-field-value" id="p_hr"></span></div>
@@ -862,7 +876,7 @@
 
             <div class="print-section" id="rtpaSection" style="display: none;">
                 <div class="print-section-title">ยา rtPA (Thrombolytic Therapy)</div>
-                <div class="print-row">
+                <div class="print-row" id="rtpaRowGiven">
                     <div class="print-field print-col-50"><span class="print-field-label">Given</span><span class="print-field-value">Yes</span></div>
                     <div class="print-field print-col-50"><span class="print-field-label">Time</span><span class="print-field-value" id="p_rtpaTime"></span></div>
                 </div>
@@ -986,9 +1000,18 @@
             const element = document.getElementById(elementId);
             
             if (isBlank) {
-                // โหมดแบบฟอร์มเปล่า: ให้แสดงเส้นประเพื่อให้เขียนเติม
+                // ถ้าเป็นโหมด Blank ให้แสดงผล และถ้าค่าว่างให้ขีดเส้นประ
                 container.style.display = 'flex';
-                element.innerHTML = '<span style="border-bottom: 1px dotted #999; display: inline-block; width: 100%; min-width: 50px;">&nbsp;</span>';
+                if (!value || value.includes('checkbox-square')) {
+                    // ถ้า value มี html checkbox อยู่แล้ว ให้ใช้ value เลย
+                    if(value && value.includes('checkbox-square')) {
+                         element.innerHTML = value;
+                    } else {
+                         element.innerHTML = '<span style="border-bottom: 1px dotted #999; display: inline-block; width: 100%; min-width: 50px;">&nbsp;</span>';
+                    }
+                } else {
+                    element.innerHTML = value + suffix;
+                }
                 return;
             }
 
@@ -1005,16 +1028,30 @@
                 element.textContent = value + suffix;
             }
         }
+        
+        // Helper สร้าง Checkbox สำหรับโหมด Blank
+        function getBlankCheckboxes(labels) {
+            return labels.map(label => `<span class="checkbox-square"></span><span class="checkbox-label">${label}</span>`).join(' ');
+        }
 
         function generatePreview(isBlank) {
             // Data Object
             let data = {};
             
             if (isBlank) {
-                // ถ้าเป็นโหมด Blank ให้ส่งค่าว่างไปทั้งหมด
-                // (ตัว setPrint จะจัดการเปลี่ยนเป็นเส้นประเอง)
+                // โหมดแบบฟอร์มเปล่า: สร้าง HTML Checkbox สำหรับหัวข้อที่ระบุ
                 data = {
-                    date: "..........................", time: ".........................."
+                    date: "..........................", time: "..........................",
+                    comorbidities: getBlankCheckboxes(['เบาหวาน', 'ความดัน', 'ไขมัน', 'โรคหัวใจ', 'Afib', 'Old CVA', 'สูบบุหรี่']),
+                    
+                    targetVessel: getBlankCheckboxes(['Right', 'Left', 'ICA', 'M1', 'M2', 'ACA', 'PCA', 'Basilar', 'Vert']),
+                    sensory: getBlankCheckboxes(['Normal', 'Decrease', 'Absent']),
+                    bulbar: getBlankCheckboxes(['Facial Palsy', 'Aphasia', 'Dysarthria', 'Neglect']),
+                    
+                    addImg: getBlankCheckboxes(['CTA Brain/Neck', 'MRI Brain', 'Other: _________']),
+                    criteria: getBlankCheckboxes(['LVO Confirmed', 'In Window', 'NIHSS>=6', 'ASPECTS>=6', 'Pre-mRS 0-1']) + '<br><span class="checkbox-square"></span> Contraindication: ________________',
+                    
+                    rtpa: 'BLANK_MODE' // Flag พิเศษ
                 };
             } else {
                 // ดึงข้อมูลจริงจากฟอร์ม
@@ -1085,11 +1122,13 @@
             }
 
             // Set Header & Date
-            document.getElementById('p_headerDate').textContent = `Date: ${data.date} Time: ${data.time}`;
-            if(isBlank) document.getElementById('p_headerDate').innerHTML = "Date: ....................... Time: .......................";
-            
-            document.getElementById('p_signDate').textContent = `วันที่ ${data.date} เวลา ${data.time}`;
-             if(isBlank) document.getElementById('p_signDate').innerHTML = "วันที่ ....................... เวลา .......................";
+            if(isBlank) {
+                document.getElementById('p_headerDate').innerHTML = "Date: ....................... Time: .......................";
+                document.getElementById('p_signDate').innerHTML = "วันที่ ....................... เวลา .......................";
+            } else {
+                document.getElementById('p_headerDate').textContent = `Date: ${data.date} Time: ${data.time}`;
+                document.getElementById('p_signDate').textContent = `วันที่ ${data.date} เวลา ${data.time}`;
+            }
 
             // Patient Info
             setPrint('p_hn', 'pf_hn', data.hn, '', isBlank);
@@ -1097,7 +1136,14 @@
             setPrint('p_age', 'pf_age', data.age, ' ปี', isBlank);
             setPrint('p_gender', 'pf_gender', data.gender, '', isBlank);
             setPrint('p_weight', 'pf_weight', data.weight, ' kg', isBlank);
-            setPrint('p_comorbidities', 'pf_comorbidities', getCheckedValues(['diabetes', 'hypertension', 'heartdisease', 'afib', 'thromboembol', 'smoking']), '', isBlank);
+            
+            // Comorbidities (ใช้ค่าที่เตรียมไว้ถ้า Blank)
+            if (isBlank) {
+                setPrint('p_comorbidities', 'pf_comorbidities', data.comorbidities, '', isBlank);
+            } else {
+                setPrint('p_comorbidities', 'pf_comorbidities', getCheckedValues(['diabetes', 'hypertension', 'heartdisease', 'afib', 'thromboembol', 'smoking']), '', isBlank);
+            }
+            
             setPrint('p_medications', 'pf_medications', data.medications, '', isBlank);
 
             // History
@@ -1106,12 +1152,12 @@
             
             // GCS
             let gcsTxt = '';
-            if(data.gcsTotal) gcsTxt = `E${data.gcsE}V${data.gcsV}M${data.gcsM} (${data.gcsTotal})`;
+            if(!isBlank && data.gcsTotal) gcsTxt = `E${data.gcsE}V${data.gcsV}M${data.gcsM} (${data.gcsTotal})`;
             setPrint('p_gcs', 'pf_gcs', gcsTxt, '', isBlank);
             
             // Pupil
             let pupilTxt = '';
-            if(data.pupilRT || data.pupilLT) pupilTxt = `Rt ${data.pupilRT||'-'} / Lt ${data.pupilLT||'-'} mm`;
+            if(!isBlank && (data.pupilRT || data.pupilLT)) pupilTxt = `Rt ${data.pupilRT||'-'} / Lt ${data.pupilLT||'-'} mm`;
             setPrint('p_pupils', 'pf_pupils', pupilTxt, '', isBlank);
             
             setPrint('p_nihss', 'pf_nihss', data.nihss, '', isBlank);
@@ -1122,14 +1168,16 @@
             setPrint('p_motorSigns', 'pf_motorSigns', motorArr.join(', '), '', isBlank);
 
             // Sensory + Bulbar
-            let sensBulbTxt = '';
-            if(!isBlank) {
+            if(isBlank) {
+                 setPrint('p_sensorySigns', 'pf_sensoryBulbar', `Sensory: ${data.sensory} <br> Bulbar: ${data.bulbar}`, '', isBlank);
+            } else {
+                let sensBulbTxt = '';
                 const sensoryArr = [data.sensoryRT, data.sensoryLT].filter(x => x && x!=='Normal');
                 sensBulbTxt = sensoryArr.join(', ');
                 if(data.bulbar) sensBulbTxt += (sensBulbTxt ? ', ' : '') + data.bulbar;
                 if(!sensBulbTxt) sensBulbTxt = 'Normal/None';
+                setPrint('p_sensorySigns', 'pf_sensoryBulbar', sensBulbTxt, '', isBlank); 
             }
-            setPrint('p_sensorySigns', 'pf_sensoryBulbar', sensBulbTxt, '', isBlank); 
 
             // Vital Signs
             let bpTxt = (data.sbp && data.dbp) ? `${data.sbp}/${data.dbp}` : '';
@@ -1138,49 +1186,79 @@
             setPrint('p_rr', 'pf_rr', data.rr, '', isBlank);
             setPrint('p_o2sat', 'pf_o2sat', data.o2sat, '%', isBlank);
             
-            let intubTxt = data.intubation === 'Yes' ? 'Yes' : 'No';
-            if(data.intubNote) intubTxt += ` (${data.intubNote})`;
+            let intubTxt = '';
+            if(!isBlank) {
+                intubTxt = data.intubation === 'Yes' ? 'Yes' : 'No';
+                if(data.intubNote) intubTxt += ` (${data.intubNote})`;
+            }
             setPrint('p_intubation', 'pf_intubation', intubTxt, '', isBlank);
 
-            // rtPA
-            if(data.rtpa === 'Yes' && !isBlank) {
-                document.getElementById('rtpaSection').style.display = 'block';
-                document.getElementById('p_rtpaTime').textContent = document.getElementById('rtpaTime').value;
-                document.getElementById('rtpaDosesBox').innerHTML = document.getElementById('calculate-box')?.innerHTML || 
-                   `Total: ${document.getElementById('calcTotal').textContent} mg`;
+            // rtPA Logic Updated
+            const rtpaSection = document.getElementById('rtpaSection');
+            const rtpaRowGiven = document.getElementById('rtpaRowGiven');
+            const rtpaDosesBox = document.getElementById('rtpaDosesBox');
+            
+            if (isBlank) {
+                rtpaSection.style.display = 'block';
+                // ปรับให้เป็น Checkbox สำหรับโหมด Blank
+                rtpaRowGiven.innerHTML = `
+                    <div class="print-field print-col-100" style="border:none;">
+                        <span class="checkbox-square"></span> ได้รับ rtPA เวลา: <span style="border-bottom: 1px dotted #999; display:inline-block; width: 60px;">&nbsp;</span> น.
+                        &nbsp;&nbsp;น้ำหนัก: <span style="border-bottom: 1px dotted #999; display:inline-block; width: 40px;">&nbsp;</span> kg
+                    </div>
+                `;
+                rtpaDosesBox.innerHTML = `
+                   <div style="display:flex; gap:10px; margin-top:5px;">
+                      <span>Total dose: <span style="border-bottom: 1px dotted #999; display:inline-block; width: 40px;">&nbsp;</span> mg</span>
+                      <span>Bolus: <span style="border-bottom: 1px dotted #999; display:inline-block; width: 40px;">&nbsp;</span> mg</span>
+                      <span>Drip: <span style="border-bottom: 1px dotted #999; display:inline-block; width: 40px;">&nbsp;</span> mg</span>
+                   </div>
+                `;
+            } else if(data.rtpa === 'Yes') {
+                rtpaSection.style.display = 'block';
+                // คืนค่าเดิมสำหรับโหมดปกติ
+                rtpaRowGiven.innerHTML = `
+                    <div class="print-field print-col-50"><span class="print-field-label">Given</span><span class="print-field-value">Yes</span></div>
+                    <div class="print-field print-col-50"><span class="print-field-label">Time</span><span class="print-field-value" id="p_rtpaTime">${document.getElementById('rtpaTime').value}</span></div>
+                `;
+                rtpaDosesBox.innerHTML = document.getElementById('calculate-box')?.innerHTML || `Total: ${document.getElementById('calcTotal').textContent} mg`;
             } else {
-                document.getElementById('rtpaSection').style.display = 'none';
+                rtpaSection.style.display = 'none';
             }
 
             // Imaging
-            let territory = '';
-            if(!isBlank) {
+            if(isBlank) {
+                setPrint('p_territory', 'pf_territory', data.targetVessel, '', isBlank);
+                setPrint('p_additionalImaging', 'pf_additionalImaging', data.addImg, '', isBlank);
+            } else {
+                let territory = '';
                 if(data.ctSide) territory += data.ctSide + ' ';
                 if(data.ctVessels) territory += data.ctVessels;
+                setPrint('p_territory', 'pf_territory', territory, '', isBlank);
+                
+                let addImgTxt = data.addImgType === 'None' ? '' : data.addImgType;
+                if(data.addImgNote) addImgTxt += ` (${data.addImgNote})`;
+                setPrint('p_additionalImaging', 'pf_additionalImaging', addImgTxt, '', isBlank);
             }
-            setPrint('p_territory', 'pf_territory', territory, '', isBlank);
             
             setPrint('p_aspects', 'pf_aspects', data.aspects, '', isBlank);
             setPrint('p_ctFindings', 'pf_ctFindings', data.ctFindings, '', isBlank);
             setPrint('p_ctDetails', 'pf_ctDetails', data.ctDetails, '', isBlank);
-            
-            let addImgTxt = '';
-            if(!isBlank) {
-                addImgTxt = data.addImgType === 'None' ? '' : data.addImgType;
-                if(data.addImgNote) addImgTxt += ` (${data.addImgNote})`;
-            }
-            setPrint('p_additionalImaging', 'pf_additionalImaging', addImgTxt, '', isBlank);
 
             // Indication & Contact
-            setPrint('p_criteria', 'pf_criteria', data.criteria, '', isBlank);
-            setPrint('p_contraindications', 'pf_contraindications', data.contraindications, '', isBlank);
+            if(isBlank) {
+                setPrint('p_criteria', 'pf_criteria', data.criteria, '', isBlank);
+                document.getElementById('pf_contraindications').style.display = 'none'; // ซ่อนเพราะรวมใน criteria แล้ว
+            } else {
+                setPrint('p_criteria', 'pf_criteria', data.criteria, '', isBlank);
+                setPrint('p_contraindications', 'pf_contraindications', data.contraindications, '', isBlank);
+            }
+
             setPrint('p_familyRelation', 'pf_familyRelation', data.famRel, '', isBlank);
             setPrint('p_familyPhone', 'pf_familyPhone', data.famPhone, '', isBlank);
             
             // Always show contact section in blank mode
-            if(isBlank) document.getElementById('section_contact').style.display = 'block';
-            else if(!data.famRel && !data.famPhone) document.getElementById('section_contact').style.display = 'none';
-            else document.getElementById('section_contact').style.display = 'block';
+            document.getElementById('section_contact').style.display = (isBlank || data.famRel || data.famPhone) ? 'block' : 'none';
 
             document.getElementById('printPreview').classList.add('show');
             document.querySelector('.container').style.display = 'none';
