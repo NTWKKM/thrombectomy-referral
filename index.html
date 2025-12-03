@@ -399,22 +399,42 @@
             text-align: center;
         }
 
+        /* --- แก้ไข: @media print --- */
         @media print {
-            body, .container, header, .content, .button-group {
-                display: none;
+            /* ซ่อนเฉพาะ Container (ฟอร์ม) และ Header, Buttons */
+            .container, header, .content, .button-group {
+                display: none !important;
             }
+
+            /* ***สำคัญ: ต้องไม่ซ่อน body*** */
+            body {
+                margin: 0;
+                padding: 0;
+                background: white;
+                visibility: visible;
+            }
+
+            /* บังคับให้ print preview แสดงผล */
             .print-preview {
-                display: block;
+                display: block !important;
                 position: absolute;
-                top: 0; left: 0; width: 100%;
+                top: 0;
+                left: 0;
+                width: 100%;
+                visibility: visible;
             }
+
+            /* ตั้งค่าหน้ากระดาษ */
             .print-document {
                 box-shadow: none;
                 padding: 0;
                 max-width: 100%;
                 width: 100%;
             }
+            
+            /* ซ่อนปุ่มต่างๆ ในโหมดปริ้นอีกทีเพื่อความชัวร์ */
             .print-preview button { display: none !important; }
+            
             @page {
                 size: A4;
                 margin: 1cm;
@@ -748,7 +768,7 @@
                         <label>Indication MT (Checklist)</label>
                         <div class="checkbox-group">
                             <div class="checkbox-item"><input type="checkbox" id="criterion1" value="Large vessel occlusion confirmed"><label for="criterion1">LVO Confirmed</label></div>
-                            <div class="checkbox-item"><input type="checkbox" id="criterion2" value="Within intervention window"><label for="criterion2">In Time Window</label></div>
+                            <div class="checkbox-item"><input type="checkbox" id="criterion2" value="Within intervention window"><label for="criterion2">In Time Window (within 24 hrs)</label></div>
                             <div class="checkbox-item"><input type="checkbox" id="criterion3" value="NIHSS >= 6"><label for="criterion3">NIHSS ≥ 6</label></div>
                             <div class="checkbox-item"><input type="checkbox" id="criterion5" value="ASPECTS score >= 6"><label for="criterion5">ASPECTS Score ≥ 6</label></div>
                             <div class="checkbox-item"><input type="checkbox" id="criterion6" value="Pre-stroke mRS 0-1"><label for="criterion6">Pre-stroke mRS 0-1</label></div>
