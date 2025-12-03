@@ -23,7 +23,7 @@
         }
 
         body {
-            font-family: 'Sarabun', Arial, sans-serif; /* แนะนำให้ใช้ font ที่รองรับภาษาไทยสวยๆ ถ้ามี */
+            font-family: 'Sarabun', Arial, sans-serif;
             background: var(--light);
             color: var(--dark);
             padding: 20px;
@@ -108,9 +108,11 @@
             font-size: 14px;
         }
 
+        /* เพิ่ม input[type="tel"] ให้ขนาดเท่ากัน */
         input[type="text"],
         input[type="number"],
         input[type="time"],
+        input[type="tel"],
         select,
         textarea {
             width: 100%;
@@ -197,7 +199,7 @@
         
         .motor-row:last-child { margin-bottom: 0; }
 
-        .motor-item, .sensory-item {
+        .motor-item {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 8px;
@@ -207,6 +209,19 @@
         .sensory-group {
             display: grid;
             grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        /* ปรับ Sensory item เป็น Flexbox แก้ปัญหาตัวหนังสือทับ */
+        .sensory-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .sensory-item label {
+            margin-bottom: 0;
+            white-space: nowrap;
+            min-width: 30px;
         }
 
         .calculate-box {
@@ -249,6 +264,9 @@
         .btn-secondary:hover { background: #ec971f; }
         .btn-danger { background: var(--danger); color: var(--white); }
         .btn-danger:hover { background: #c9302c; }
+        /* ปุ่มสีเทาสำหรับ Print Blank */
+        .btn-info { background: #17a2b8; color: var(--white); } 
+        .btn-info:hover { background: #138496; }
 
         /* Print Preview Styles */
         .print-preview {
@@ -288,14 +306,6 @@
             font-weight: bold;
         }
 
-        .print-date-top {
-            position: absolute;
-            top: 5px;
-            right: 0;
-            font-size: 11px;
-            text-align: right;
-        }
-
         .print-section {
             margin-bottom: 8px;
             page-break-inside: avoid;
@@ -309,6 +319,9 @@
             margin-bottom: 4px;
             border-bottom: 1px solid var(--dark);
             font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .print-row {
@@ -393,6 +406,15 @@
             /* Hide print buttons */
             .print-preview button { display: none !important; }
         }
+        
+        @media (max-width: 768px) {
+            .row, .row.three, .row.five, .motor-row, .sensory-group {
+                grid-template-columns: 1fr;
+            }
+            .print-layout-loc {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
@@ -429,14 +451,8 @@
                             <div class="form-group">
                                 <label>เพศ</label>
                                 <div class="radio-group">
-                                    <div class="radio-item">
-                                        <input type="radio" name="gender" value="ชาย" id="male">
-                                        <label for="male">ชาย</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" name="gender" value="หญิง" id="female">
-                                        <label for="female">หญิง</label>
-                                    </div>
+                                    <div class="radio-item"><input type="radio" name="gender" value="ชาย" id="male"><label for="male">ชาย</label></div>
+                                    <div class="radio-item"><input type="radio" name="gender" value="หญิง" id="female"><label for="female">หญิง</label></div>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -482,10 +498,8 @@
                                 <label>สถานที่ค้นพบ</label>
                                 <select id="location" required>
                                     <option value="">-- เลือก --</option>
-                                    <option>บ้าน</option>
-                                    <option>บนถนน</option>
-                                    <option>สถานที่ทำงาน</option>
-                                    <option>โรงพยาบาลอื่น</option>
+                                    <option>บ้าน</option><option>บนถนน</option>
+                                    <option>สถานที่ทำงาน</option><option>โรงพยาบาลอื่น</option>
                                     <option>อื่นๆ</option>
                                 </select>
                             </div>
@@ -493,7 +507,6 @@
 
                         <div style="background: #fffbea; padding: 10px; border-radius: 4px; margin-bottom: 15px; border: 1px solid #faebcc;">
                             <label style="margin-bottom: 8px; color: #8a6d3b;">Neurological Status</label>
-                            
                             <div class="row four" style="margin-bottom: 10px;">
                                 <div class="form-group" style="margin-bottom:0;">
                                     <label style="font-size: 11px;">E (Eye)</label>
@@ -512,7 +525,6 @@
                                     <input type="number" id="gcsTotal" readonly style="background: #eee; font-weight:bold;">
                                 </div>
                             </div>
-
                             <div class="row three">
                                 <div class="form-group">
                                     <label style="font-size: 12px;">Pupil RT (mm)</label>
@@ -533,56 +545,12 @@
                             <label style="margin-bottom: 10px;">Motor Signs</label>
                             <div class="motor-group">
                                 <div class="motor-row">
-                                    <div class="motor-item">
-                                        <label style="margin-bottom: 0;">RT Upper</label>
-                                        <select id="motorRTUpper">
-                                            <option value="">-- ไม่มี --</option>
-                                            <option value="RT Upper Gr 0">Gr 0</option>
-                                            <option value="RT Upper Gr 1">Gr 1</option>
-                                            <option value="RT Upper Gr 2">Gr 2</option>
-                                            <option value="RT Upper Gr 3">Gr 3</option>
-                                            <option value="RT Upper Gr 4">Gr 4</option>
-                                            <option value="RT Upper Gr 5">Gr 5</option>
-                                        </select>
-                                    </div>
-                                    <div class="motor-item">
-                                        <label style="margin-bottom: 0;">LT Upper</label>
-                                        <select id="motorLTUpper">
-                                            <option value="">-- ไม่มี --</option>
-                                            <option value="LT Upper Gr 0">Gr 0</option>
-                                            <option value="LT Upper Gr 1">Gr 1</option>
-                                            <option value="LT Upper Gr 2">Gr 2</option>
-                                            <option value="LT Upper Gr 3">Gr 3</option>
-                                            <option value="LT Upper Gr 4">Gr 4</option>
-                                            <option value="LT Upper Gr 5">Gr 5</option>
-                                        </select>
-                                    </div>
+                                    <div class="motor-item"><label>RT Upper</label><select id="motorRTUpper"><option value="">-- ไม่มี --</option><option value="RT Upper Gr 0">Gr 0</option><option value="RT Upper Gr 1">Gr 1</option><option value="RT Upper Gr 2">Gr 2</option><option value="RT Upper Gr 3">Gr 3</option><option value="RT Upper Gr 4">Gr 4</option><option value="RT Upper Gr 5">Gr 5</option></select></div>
+                                    <div class="motor-item"><label>LT Upper</label><select id="motorLTUpper"><option value="">-- ไม่มี --</option><option value="LT Upper Gr 0">Gr 0</option><option value="LT Upper Gr 1">Gr 1</option><option value="LT Upper Gr 2">Gr 2</option><option value="LT Upper Gr 3">Gr 3</option><option value="LT Upper Gr 4">Gr 4</option><option value="LT Upper Gr 5">Gr 5</option></select></div>
                                 </div>
                                 <div class="motor-row">
-                                    <div class="motor-item">
-                                        <label style="margin-bottom: 0;">RT Lower</label>
-                                        <select id="motorRTLower">
-                                            <option value="">-- ไม่มี --</option>
-                                            <option value="RT Lower Gr 0">Gr 0</option>
-                                            <option value="RT Lower Gr 1">Gr 1</option>
-                                            <option value="RT Lower Gr 2">Gr 2</option>
-                                            <option value="RT Lower Gr 3">Gr 3</option>
-                                            <option value="RT Lower Gr 4">Gr 4</option>
-                                            <option value="RT Lower Gr 5">Gr 5</option>
-                                        </select>
-                                    </div>
-                                    <div class="motor-item">
-                                        <label style="margin-bottom: 0;">LT Lower</label>
-                                        <select id="motorLTLower">
-                                            <option value="">-- ไม่มี --</option>
-                                            <option value="LT Lower Gr 0">Gr 0</option>
-                                            <option value="LT Lower Gr 1">Gr 1</option>
-                                            <option value="LT Lower Gr 2">Gr 2</option>
-                                            <option value="LT Lower Gr 3">Gr 3</option>
-                                            <option value="LT Lower Gr 4">Gr 4</option>
-                                            <option value="LT Lower Gr 5">Gr 5</option>
-                                        </select>
-                                    </div>
+                                    <div class="motor-item"><label>RT Lower</label><select id="motorRTLower"><option value="">-- ไม่มี --</option><option value="RT Lower Gr 0">Gr 0</option><option value="RT Lower Gr 1">Gr 1</option><option value="RT Lower Gr 2">Gr 2</option><option value="RT Lower Gr 3">Gr 3</option><option value="RT Lower Gr 4">Gr 4</option><option value="RT Lower Gr 5">Gr 5</option></select></div>
+                                    <div class="motor-item"><label>LT Lower</label><select id="motorLTLower"><option value="">-- ไม่มี --</option><option value="LT Lower Gr 0">Gr 0</option><option value="LT Lower Gr 1">Gr 1</option><option value="LT Lower Gr 2">Gr 2</option><option value="LT Lower Gr 3">Gr 3</option><option value="LT Lower Gr 4">Gr 4</option><option value="LT Lower Gr 5">Gr 5</option></select></div>
                                 </div>
                             </div>
                         </div>
@@ -591,19 +559,15 @@
                             <label style="margin-bottom: 10px;">Sensory Signs</label>
                             <div class="sensory-group">
                                 <div class="sensory-item">
-                                    <label style="margin-bottom: 0;">RT</label>
+                                    <label>RT</label>
                                     <select id="sensoryRT">
-                                        <option value="Normal">Normal</option>
-                                        <option value="RT Sensory Decrease">Decrease</option>
-                                        <option value="RT Sensory Absent">Absent</option>
+                                        <option value="Normal">Normal</option><option value="RT Sensory Decrease">Decrease</option><option value="RT Sensory Absent">Absent</option>
                                     </select>
                                 </div>
                                 <div class="sensory-item">
-                                    <label style="margin-bottom: 0;">LT</label>
+                                    <label>LT</label>
                                     <select id="sensoryLT">
-                                        <option value="Normal">Normal</option>
-                                        <option value="LT Sensory Decrease">Decrease</option>
-                                        <option value="LT Sensory Absent">Absent</option>
+                                        <option value="Normal">Normal</option><option value="LT Sensory Decrease">Decrease</option><option value="LT Sensory Absent">Absent</option>
                                     </select>
                                 </div>
                             </div>
@@ -638,32 +602,14 @@
                     <div class="section-body">
                         <label style="display: block; margin-bottom: 10px;">Vital Signs:</label>
                         <div class="row five">
-                            <div class="form-group">
-                                <label style="font-size: 12px;">SBP</label>
-                                <input type="number" id="sbp" placeholder="120" min="0" max="300">
-                            </div>
-                            <div class="form-group">
-                                <label style="font-size: 12px;">DBP</label>
-                                <input type="number" id="dbp" placeholder="80" min="0" max="200">
-                            </div>
-                            <div class="form-group">
-                                <label style="font-size: 12px;">HR</label>
-                                <input type="number" id="hr" placeholder="80" min="0" max="200">
-                            </div>
-                            <div class="form-group">
-                                <label style="font-size: 12px;">RR</label>
-                                <input type="number" id="rr" placeholder="20" min="0" max="60">
-                            </div>
-                            <div class="form-group">
-                                <label style="font-size: 12px;">BT</label>
-                                <input type="number" id="temp" placeholder="36.5" min="30" max="42" step="0.1">
-                            </div>
+                            <div class="form-group"><label style="font-size: 12px;">SBP</label><input type="number" id="sbp" placeholder="120" min="0" max="300"></div>
+                            <div class="form-group"><label style="font-size: 12px;">DBP</label><input type="number" id="dbp" placeholder="80" min="0" max="200"></div>
+                            <div class="form-group"><label style="font-size: 12px;">HR</label><input type="number" id="hr" placeholder="80" min="0" max="200"></div>
+                            <div class="form-group"><label style="font-size: 12px;">RR</label><input type="number" id="rr" placeholder="20" min="0" max="60"></div>
+                            <div class="form-group"><label style="font-size: 12px;">BT</label><input type="number" id="temp" placeholder="36.5" min="30" max="42" step="0.1"></div>
                         </div>
                         <div class="row">
-                            <div class="form-group">
-                                <label style="font-size: 12px;">O2 Sat (%)</label>
-                                <input type="number" id="o2sat" placeholder="98" min="0" max="100">
-                            </div>
+                            <div class="form-group"><label style="font-size: 12px;">O2 Sat (%)</label><input type="number" id="o2sat" placeholder="98" min="0" max="100"></div>
                             <div class="form-group">
                                 <label style="font-size: 12px;">ท่อช่วยหายใจ</label>
                                 <div class="radio-group" style="margin-top:0;">
@@ -684,36 +630,17 @@
                         <div class="form-group" style="margin-top: 15px; padding: 10px; background: #f0f8ff; border-radius: 4px;">
                             <label>ได้ยา rtPA (Thrombolytic)</label>
                             <div class="radio-group">
-                                <div class="radio-item">
-                                    <input type="radio" name="rtpa" value="No" id="rtpaNo" checked onchange="toggleRTPAInput()">
-                                    <label for="rtpaNo">ไม่ได้</label>
-                                </div>
-                                <div class="radio-item">
-                                    <input type="radio" name="rtpa" value="Yes" id="rtpaYes" onchange="toggleRTPAInput()">
-                                    <label for="rtpaYes">ได้แล้ว</label>
-                                </div>
+                                <div class="radio-item"><input type="radio" name="rtpa" value="No" id="rtpaNo" checked onchange="toggleRTPAInput()"><label for="rtpaNo">ไม่ได้</label></div>
+                                <div class="radio-item"><input type="radio" name="rtpa" value="Yes" id="rtpaYes" onchange="toggleRTPAInput()"><label for="rtpaYes">ได้แล้ว</label></div>
                             </div>
-
                             <div id="rtpaInputGroup" style="display: none; margin-top: 10px;">
-                                <div class="form-group">
-                                    <label>เวลาให้ rtPA</label>
-                                    <input type="time" id="rtpaTime">
-                                </div>
-                                <div class="form-group">
-                                    <label>น้ำหนัก (kg)</label>
-                                    <input type="number" id="rtpaWeight" placeholder="70" min="20" max="200" step="0.1" onchange="calculateRTPAdoses()">
-                                </div>
+                                <div class="form-group"><label>เวลาให้ rtPA</label><input type="time" id="rtpaTime"></div>
+                                <div class="form-group"><label>น้ำหนัก (kg)</label><input type="number" id="rtpaWeight" placeholder="70" min="20" max="200" step="0.1" onchange="calculateRTPAdoses()"></div>
                                 <div class="form-group">
                                     <label>ระดับยา</label>
                                     <div class="radio-group">
-                                        <div class="radio-item">
-                                            <input type="radio" name="rtpaDose" value="standard" id="doseStandard" checked onchange="calculateRTPAdoses()">
-                                            <label for="doseStandard">Standard: 0.9 mg/kg</label>
-                                        </div>
-                                        <div class="radio-item">
-                                            <input type="radio" name="rtpaDose" value="alternative" id="doseAlternative" onchange="calculateRTPAdoses()">
-                                            <label for="doseAlternative">Alternative: 0.6 mg/kg</label>
-                                        </div>
+                                        <div class="radio-item"><input type="radio" name="rtpaDose" value="standard" id="doseStandard" checked onchange="calculateRTPAdoses()"><label for="doseStandard">Standard: 0.9 mg/kg</label></div>
+                                        <div class="radio-item"><input type="radio" name="rtpaDose" value="alternative" id="doseAlternative" onchange="calculateRTPAdoses()"><label for="doseAlternative">Alternative: 0.6 mg/kg</label></div>
                                     </div>
                                 </div>
                                 <div class="calculate-box">
@@ -729,7 +656,7 @@
 
                 <div class="section">
                     <div class="section-header" onclick="toggleSection(this)">
-                        <span>🖼️ Section 5: ผล Imaging</span>
+                        <span>🖼️ Section 4: ผล Imaging</span>
                         <span class="toggle">▼</span>
                     </div>
                     <div class="section-body">
@@ -742,18 +669,25 @@
                                     <div class="radio-item"><input type="radio" name="ct_side" value="Right" id="side_rt"><label for="side_rt">Right (ขวา)</label></div>
                                     <div class="radio-item"><input type="radio" name="ct_side" value="Left" id="side_lt"><label for="side_lt">Left (ซ้าย)</label></div>
                                     <div class="radio-item"><input type="radio" name="ct_side" value="Bilateral" id="side_bi"><label for="side_bi">Bilateral (สองข้าง)</label></div>
+                                    <div class="radio-item"><input type="radio" name="ct_side" value="None" id="side_none"><label for="side_none">None (ไม่ระบุ/ไม่ได้ทำ)</label></div>
                                 </div>
                             </div>
 
                             <div class="form-group" style="margin-top: 10px;">
                                 <label style="font-size: 13px;">2. ระบุเส้นเลือด (Vessel)</label>
-                                <div class="checkbox-group"> <div class="checkbox-item"><input type="checkbox" id="vessel_ica" value="ICA"><label for="vessel_ica">ICA</label></div>
+                                <div class="checkbox-group"> 
+                                    <div class="checkbox-item"><input type="checkbox" id="vessel_ica" value="ICA"><label for="vessel_ica">ICA</label></div>
                                     <div class="checkbox-item"><input type="checkbox" id="vessel_m1" value="MCA M1"><label for="vessel_m1">MCA M1</label></div>
                                     <div class="checkbox-item"><input type="checkbox" id="vessel_m2" value="MCA M2"><label for="vessel_m2">MCA M2</label></div>
                                     <div class="checkbox-item"><input type="checkbox" id="vessel_aca" value="ACA"><label for="vessel_aca">ACA (A1/A2)</label></div>
                                     <div class="checkbox-item"><input type="checkbox" id="vessel_pca" value="PCA"><label for="vessel_pca">PCA (P1)</label></div>
                                     <div class="checkbox-item"><input type="checkbox" id="vessel_basilar" value="Basilar Artery"><label for="vessel_basilar">Basilar</label></div>
                                     <div class="checkbox-item"><input type="checkbox" id="vessel_vert" value="Vertebral Artery"><label for="vessel_vert">Vertebral</label></div>
+                                    <div class="checkbox-item" style="display: flex; align-items: center;">
+                                        <input type="checkbox" id="vessel_other" value="Other">
+                                        <label for="vessel_other" style="margin-right: 5px;">Other</label>
+                                        <input type="text" id="vessel_other_text" placeholder="ระบุ..." style="width: 150px; padding: 2px 5px; height: 25px;" onclick="document.getElementById('vessel_other').checked = true">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -793,7 +727,7 @@
 
                 <div class="section">
                     <div class="section-header" onclick="toggleSection(this)">
-                        <span>🎯 Section 6: เหตุผลการส่ง (Thrombectomy Indication)</span>
+                        <span>🎯 Section 5: เหตุผลการส่ง (Thrombectomy Indication)</span>
                         <span class="toggle">▼</span>
                     </div>
                     <div class="section-body">
@@ -815,7 +749,7 @@
             
                 <div class="section">
                     <div class="section-header" onclick="toggleSection(this)">
-                        <span>📞 Section 7: ข้อมูลติดต่อ</span>
+                        <span>📞 Section 6: ข้อมูลติดต่อ</span>
                         <span class="toggle">▼</span>
                     </div>
                     <div class="section-body">
@@ -838,7 +772,8 @@
                 </div>
 
                 <div class="button-group">
-                    <button type="button" class="btn-primary" onclick="generatePreview()">📄 Generate & Print Preview</button>
+                    <button type="button" class="btn-primary" onclick="generatePreview(false)">📄 Generate & Print Preview</button>
+                    <button type="button" class="btn-info" onclick="generatePreview(true)">🖨️ Print Blank Form (แบบฟอร์มเปล่า)</button>
                     <button type="button" class="btn-danger" onclick="clearForm()">🗑️ Clear All</button>
                 </div>
             </form>
@@ -852,13 +787,15 @@
     <div class="print-preview" id="printPreview">
         <div class="print-document" id="printDocument">
             <div class="print-header">
-                <div class="print-date-top" id="p_headerDate"></div>
                 <h1>🏥 STROKE FAST TRACK - MECHANICAL THROMBECTOMY REFERRAL</h1>
                 <p>โรงพยาบาลมหาราชนครราชสีมา</p>
             </div>
 
             <div class="print-section">
-                <div class="print-section-title">ข้อมูลพื้นฐานผู้ป่วย (Patient Information)</div>
+                <div class="print-section-title">
+                    <span>ข้อมูลพื้นฐานผู้ป่วย (Patient Information)</span>
+                    <span style="font-weight: normal; font-size: 11px;" id="p_headerDate"></span>
+                </div>
                 <div class="print-row">
                     <div class="print-field print-col-33" id="pf_hn"><span class="print-field-label">HN</span><span class="print-field-value" id="p_hn"></span></div>
                     <div class="print-field print-col-33" id="pf_name"><span class="print-field-label">ชื่อ-สกุล</span><span class="print-field-value" id="p_name"></span></div>
@@ -1044,139 +981,169 @@
             return ids.filter(id => document.getElementById(id).checked).map(id => document.getElementById(id).value).join(', ');
         }
         
-        // Helper to hide print fields if empty
-        function setPrint(elementId, containerId, value, suffix = '') {
+        function setPrint(elementId, containerId, value, suffix = '', isBlank = false) {
             const container = document.getElementById(containerId);
             const element = document.getElementById(elementId);
+            
+            if (isBlank) {
+                // โหมดแบบฟอร์มเปล่า: ให้แสดงเส้นประเพื่อให้เขียนเติม
+                container.style.display = 'flex';
+                element.innerHTML = '<span style="border-bottom: 1px dotted #999; display: inline-block; width: 100%; min-width: 50px;">&nbsp;</span>';
+                return;
+            }
+
             if (!value || value === '' || value === '-' || value === 'Normal') {
-                // If value is empty, null, or default dash, hide the container
-                // Exception: "Normal" might want to be shown? User said "ถ้าช่องไหนไม่มีการลงข้อมูล (เป็นค่าตั้งต้น) ให้ตัดออก"
-                // Assuming 'Normal' in select is a value, but if user didn't touch it?
-                // For text inputs, empty string is default.
-                if (value === 'Normal') { // Show 'Normal' for sensory
+                if (value === 'Normal') {
                      element.textContent = value;
-                     container.style.display = 'flex'; // or whatever display type
+                     container.style.display = 'flex';
                      return;
                 }
                 container.style.display = 'none';
                 element.textContent = '';
             } else {
-                container.style.display = 'flex'; // Show
+                container.style.display = 'flex';
                 element.textContent = value + suffix;
             }
         }
 
-        function generatePreview() {
-            // Get Data
-            const data = {
-                hn: document.getElementById('hn').value,
-                name: document.getElementById('name').value,
-                age: document.getElementById('age').value,
-                gender: document.querySelector('input[name="gender"]:checked')?.value || '',
-                weight: document.getElementById('weight').value,
-                medications: document.getElementById('medications').value,
-                
-                symptomTime: document.getElementById('symptomTime').value,
-                location: document.getElementById('location').value,
-                
-                gcsE: document.getElementById('gcsE').value,
-                gcsV: document.getElementById('gcsV').value,
-                gcsM: document.getElementById('gcsM').value,
-                gcsTotal: document.getElementById('gcsTotal').value,
-                pupilRT: document.getElementById('pupilRT').value,
-                pupilLT: document.getElementById('pupilLT').value,
-                nihss: document.getElementById('nihss').value,
+        function generatePreview(isBlank) {
+            // Data Object
+            let data = {};
+            
+            if (isBlank) {
+                // ถ้าเป็นโหมด Blank ให้ส่งค่าว่างไปทั้งหมด
+                // (ตัว setPrint จะจัดการเปลี่ยนเป็นเส้นประเอง)
+                data = {
+                    date: "..........................", time: ".........................."
+                };
+            } else {
+                // ดึงข้อมูลจริงจากฟอร์ม
+                data = {
+                    hn: document.getElementById('hn').value,
+                    name: document.getElementById('name').value,
+                    age: document.getElementById('age').value,
+                    gender: document.querySelector('input[name="gender"]:checked')?.value || '',
+                    weight: document.getElementById('weight').value,
+                    medications: document.getElementById('medications').value,
+                    
+                    symptomTime: document.getElementById('symptomTime').value,
+                    location: document.getElementById('location').value,
+                    
+                    gcsE: document.getElementById('gcsE').value,
+                    gcsV: document.getElementById('gcsV').value,
+                    gcsM: document.getElementById('gcsM').value,
+                    gcsTotal: document.getElementById('gcsTotal').value,
+                    pupilRT: document.getElementById('pupilRT').value,
+                    pupilLT: document.getElementById('pupilLT').value,
+                    nihss: document.getElementById('nihss').value,
 
-                motorRT_Upper: document.getElementById('motorRTUpper').value,
-                motorLT_Upper: document.getElementById('motorLTUpper').value,
-                motorRT_Lower: document.getElementById('motorRTLower').value,
-                motorLT_Lower: document.getElementById('motorLTLower').value,
-                
-                sensoryRT: document.getElementById('sensoryRT').value,
-                sensoryLT: document.getElementById('sensoryLT').value,
-                bulbar: getCheckedValues(['facialPalsyRT', 'facialPalsyLT', 'aphasia', 'dysarthria', 'dysphagia', 'hemianopia', 'ataxia', 'nystagmus']),
-                
-                sbp: document.getElementById('sbp').value,
-                dbp: document.getElementById('dbp').value,
-                hr: document.getElementById('hr').value,
-                rr: document.getElementById('rr').value,
-                o2sat: document.getElementById('o2sat').value,
-                intubation: document.querySelector('input[name="intubation"]:checked')?.value,
-                intubNote: document.getElementById('intubationNote').value,
+                    motorRT_Upper: document.getElementById('motorRTUpper').value,
+                    motorLT_Upper: document.getElementById('motorLTUpper').value,
+                    motorRT_Lower: document.getElementById('motorRTLower').value,
+                    motorLT_Lower: document.getElementById('motorLTLower').value,
+                    
+                    sensoryRT: document.getElementById('sensoryRT').value,
+                    sensoryLT: document.getElementById('sensoryLT').value,
+                    bulbar: getCheckedValues(['facialPalsyRT', 'facialPalsyLT', 'aphasia', 'dysarthria', 'dysphagia', 'hemianopia', 'ataxia', 'nystagmus']),
+                    
+                    sbp: document.getElementById('sbp').value,
+                    dbp: document.getElementById('dbp').value,
+                    hr: document.getElementById('hr').value,
+                    rr: document.getElementById('rr').value,
+                    o2sat: document.getElementById('o2sat').value,
+                    intubation: document.querySelector('input[name="intubation"]:checked')?.value,
+                    intubNote: document.getElementById('intubationNote').value,
 
-                rtpa: document.querySelector('input[name="rtpa"]:checked')?.value,
-                
-                ctSide: document.querySelector('input[name="ct_side"]:checked')?.value || '',
-                ctVessels: getCheckedValues(['vessel_ica', 'vessel_m1', 'vessel_m2', 'vessel_aca', 'vessel_pca', 'vessel_basilar', 'vessel_vert']),
-                aspects: document.getElementById('aspects').value,
-                ctFindings: getCheckedValues(['ct_acute_infarct', 'ct_hypodensity', 'ct_no_hemorrhage']),
-                ctDetails: document.getElementById('ctFindings').value,
-                
-                addImgType: document.querySelector('input[name="additionalImaging"]:checked')?.value,
-                addImgNote: document.getElementById('additionalImagingFindings').value,
-                
-                criteria: getCheckedValues(['criterion1', 'criterion2', 'criterion3', 'criterion5', 'criterion6']),
-                contraindications: document.getElementById('contraindications').value,
-                
-                famRel: document.getElementById('familyRelation').value,
-                famPhone: document.getElementById('familyPhone').value,
-                
-                date: document.getElementById('currentDate').value,
-                time: document.getElementById('currentTime').value
-            };
+                    rtpa: document.querySelector('input[name="rtpa"]:checked')?.value,
+                    
+                    ctSide: document.querySelector('input[name="ct_side"]:checked')?.value || '',
+                    ctVessels: getCheckedValues(['vessel_ica', 'vessel_m1', 'vessel_m2', 'vessel_aca', 'vessel_pca', 'vessel_basilar', 'vessel_vert']),
+                    aspects: document.getElementById('aspects').value,
+                    ctFindings: getCheckedValues(['ct_acute_infarct', 'ct_hypodensity', 'ct_no_hemorrhage']),
+                    ctDetails: document.getElementById('ctFindings').value,
+                    
+                    addImgType: document.querySelector('input[name="additionalImaging"]:checked')?.value,
+                    addImgNote: document.getElementById('additionalImagingFindings').value,
+                    
+                    criteria: getCheckedValues(['criterion1', 'criterion2', 'criterion3', 'criterion5', 'criterion6']),
+                    contraindications: document.getElementById('contraindications').value,
+                    
+                    famRel: document.getElementById('familyRelation').value,
+                    famPhone: document.getElementById('familyPhone').value,
+                    
+                    date: document.getElementById('currentDate').value,
+                    time: document.getElementById('currentTime').value
+                };
+
+                // จัดการ Other Vessel
+                if(document.getElementById('vessel_other').checked) {
+                    const otherText = document.getElementById('vessel_other_text').value;
+                    if(otherText) {
+                        data.ctVessels += (data.ctVessels ? ', ' : '') + 'Other: ' + otherText;
+                    }
+                }
+            }
 
             // Set Header & Date
             document.getElementById('p_headerDate').textContent = `Date: ${data.date} Time: ${data.time}`;
+            if(isBlank) document.getElementById('p_headerDate').innerHTML = "Date: ....................... Time: .......................";
+            
             document.getElementById('p_signDate').textContent = `วันที่ ${data.date} เวลา ${data.time}`;
+             if(isBlank) document.getElementById('p_signDate').innerHTML = "วันที่ ....................... เวลา .......................";
 
             // Patient Info
-            setPrint('p_hn', 'pf_hn', data.hn);
-            setPrint('p_name', 'pf_name', data.name);
-            setPrint('p_age', 'pf_age', data.age, ' ปี');
-            setPrint('p_gender', 'pf_gender', data.gender);
-            setPrint('p_weight', 'pf_weight', data.weight, ' kg');
-            setPrint('p_comorbidities', 'pf_comorbidities', getCheckedValues(['diabetes', 'hypertension', 'heartdisease', 'afib', 'thromboembol', 'smoking']));
-            setPrint('p_medications', 'pf_medications', data.medications);
+            setPrint('p_hn', 'pf_hn', data.hn, '', isBlank);
+            setPrint('p_name', 'pf_name', data.name, '', isBlank);
+            setPrint('p_age', 'pf_age', data.age, ' ปี', isBlank);
+            setPrint('p_gender', 'pf_gender', data.gender, '', isBlank);
+            setPrint('p_weight', 'pf_weight', data.weight, ' kg', isBlank);
+            setPrint('p_comorbidities', 'pf_comorbidities', getCheckedValues(['diabetes', 'hypertension', 'heartdisease', 'afib', 'thromboembol', 'smoking']), '', isBlank);
+            setPrint('p_medications', 'pf_medications', data.medications, '', isBlank);
 
             // History
-            setPrint('p_symptomTime', 'pf_symptomTime', data.symptomTime);
-            setPrint('p_location', 'pf_location', data.location);
+            setPrint('p_symptomTime', 'pf_symptomTime', data.symptomTime, '', isBlank);
+            setPrint('p_location', 'pf_location', data.location, '', isBlank);
             
-            // GCS Display
+            // GCS
             let gcsTxt = '';
             if(data.gcsTotal) gcsTxt = `E${data.gcsE}V${data.gcsV}M${data.gcsM} (${data.gcsTotal})`;
-            setPrint('p_gcs', 'pf_gcs', gcsTxt);
+            setPrint('p_gcs', 'pf_gcs', gcsTxt, '', isBlank);
             
-            // Pupil Display
+            // Pupil
             let pupilTxt = '';
             if(data.pupilRT || data.pupilLT) pupilTxt = `Rt ${data.pupilRT||'-'} / Lt ${data.pupilLT||'-'} mm`;
-            setPrint('p_pupils', 'pf_pupils', pupilTxt);
+            setPrint('p_pupils', 'pf_pupils', pupilTxt, '', isBlank);
             
-            setPrint('p_nihss', 'pf_nihss', data.nihss);
+            setPrint('p_nihss', 'pf_nihss', data.nihss, '', isBlank);
 
             // Motor
-            const motorArr = [data.motorRT_Upper, data.motorLT_Upper, data.motorRT_Lower, data.motorLT_Lower].filter(x => x);
-            setPrint('p_motorSigns', 'pf_motorSigns', motorArr.join(', '));
+            let motorArr = [];
+            if(!isBlank) motorArr = [data.motorRT_Upper, data.motorLT_Upper, data.motorRT_Lower, data.motorLT_Lower].filter(x => x);
+            setPrint('p_motorSigns', 'pf_motorSigns', motorArr.join(', '), '', isBlank);
 
-            // Sensory + Bulbar Combined
-            const sensoryArr = [data.sensoryRT, data.sensoryLT].filter(x => x && x!=='Normal');
-            let sensBulbTxt = sensoryArr.join(', ');
-            if(data.bulbar) sensBulbTxt += (sensBulbTxt ? ', ' : '') + data.bulbar;
-            setPrint('p_sensorySigns', 'pf_sensoryBulbar', sensBulbTxt || 'Normal/None'); 
+            // Sensory + Bulbar
+            let sensBulbTxt = '';
+            if(!isBlank) {
+                const sensoryArr = [data.sensoryRT, data.sensoryLT].filter(x => x && x!=='Normal');
+                sensBulbTxt = sensoryArr.join(', ');
+                if(data.bulbar) sensBulbTxt += (sensBulbTxt ? ', ' : '') + data.bulbar;
+                if(!sensBulbTxt) sensBulbTxt = 'Normal/None';
+            }
+            setPrint('p_sensorySigns', 'pf_sensoryBulbar', sensBulbTxt, '', isBlank); 
 
             // Vital Signs
             let bpTxt = (data.sbp && data.dbp) ? `${data.sbp}/${data.dbp}` : '';
-            setPrint('p_bp', 'pf_bp', bpTxt);
-            setPrint('p_hr', 'pf_hr', data.hr);
-            setPrint('p_rr', 'pf_rr', data.rr);
-            setPrint('p_o2sat', 'pf_o2sat', data.o2sat, '%');
+            setPrint('p_bp', 'pf_bp', bpTxt, '', isBlank);
+            setPrint('p_hr', 'pf_hr', data.hr, '', isBlank);
+            setPrint('p_rr', 'pf_rr', data.rr, '', isBlank);
+            setPrint('p_o2sat', 'pf_o2sat', data.o2sat, '%', isBlank);
             
             let intubTxt = data.intubation === 'Yes' ? 'Yes' : 'No';
             if(data.intubNote) intubTxt += ` (${data.intubNote})`;
-            setPrint('p_intubation', 'pf_intubation', intubTxt);
+            setPrint('p_intubation', 'pf_intubation', intubTxt, '', isBlank);
 
             // rtPA
-            if(data.rtpa === 'Yes') {
+            if(data.rtpa === 'Yes' && !isBlank) {
                 document.getElementById('rtpaSection').style.display = 'block';
                 document.getElementById('p_rtpaTime').textContent = document.getElementById('rtpaTime').value;
                 document.getElementById('rtpaDosesBox').innerHTML = document.getElementById('calculate-box')?.innerHTML || 
@@ -1185,30 +1152,34 @@
                 document.getElementById('rtpaSection').style.display = 'none';
             }
 
-            // CT Brain Territory Construction
+            // Imaging
             let territory = '';
-            if(data.ctSide) territory += data.ctSide + ' ';
-            if(data.ctVessels) territory += data.ctVessels;
-            setPrint('p_territory', 'pf_territory', territory);
+            if(!isBlank) {
+                if(data.ctSide) territory += data.ctSide + ' ';
+                if(data.ctVessels) territory += data.ctVessels;
+            }
+            setPrint('p_territory', 'pf_territory', territory, '', isBlank);
             
-            setPrint('p_aspects', 'pf_aspects', data.aspects);
-            setPrint('p_ctFindings', 'pf_ctFindings', data.ctFindings);
-            setPrint('p_ctDetails', 'pf_ctDetails', data.ctDetails);
+            setPrint('p_aspects', 'pf_aspects', data.aspects, '', isBlank);
+            setPrint('p_ctFindings', 'pf_ctFindings', data.ctFindings, '', isBlank);
+            setPrint('p_ctDetails', 'pf_ctDetails', data.ctDetails, '', isBlank);
             
-            let addImgTxt = data.addImgType === 'None' ? '' : data.addImgType;
-            if(data.addImgNote) addImgTxt += ` (${data.addImgNote})`;
-            setPrint('p_additionalImaging', 'pf_additionalImaging', addImgTxt);
+            let addImgTxt = '';
+            if(!isBlank) {
+                addImgTxt = data.addImgType === 'None' ? '' : data.addImgType;
+                if(data.addImgNote) addImgTxt += ` (${data.addImgNote})`;
+            }
+            setPrint('p_additionalImaging', 'pf_additionalImaging', addImgTxt, '', isBlank);
 
-            // Indication & Contra
-            setPrint('p_criteria', 'pf_criteria', data.criteria);
-            setPrint('p_contraindications', 'pf_contraindications', data.contraindications);
-
-            // Contact
-            setPrint('p_familyRelation', 'pf_familyRelation', data.famRel);
-            setPrint('p_familyPhone', 'pf_familyPhone', data.famPhone);
+            // Indication & Contact
+            setPrint('p_criteria', 'pf_criteria', data.criteria, '', isBlank);
+            setPrint('p_contraindications', 'pf_contraindications', data.contraindications, '', isBlank);
+            setPrint('p_familyRelation', 'pf_familyRelation', data.famRel, '', isBlank);
+            setPrint('p_familyPhone', 'pf_familyPhone', data.famPhone, '', isBlank);
             
-            // Hide Contact Section if empty
-            if(!data.famRel && !data.famPhone) document.getElementById('section_contact').style.display = 'none';
+            // Always show contact section in blank mode
+            if(isBlank) document.getElementById('section_contact').style.display = 'block';
+            else if(!data.famRel && !data.famPhone) document.getElementById('section_contact').style.display = 'none';
             else document.getElementById('section_contact').style.display = 'block';
 
             document.getElementById('printPreview').classList.add('show');
